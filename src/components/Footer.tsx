@@ -43,7 +43,7 @@ const Footer = () => {
             whileHover={{ scale: 1.08 }}
             className="bg-gradient-to-r from-fuchsia-500 to-red-400 bg-clip-text text-transparent font-bold"
           >
-            Siva SVR
+            LevelUpSvr
           </motion.a>
         </div>
 

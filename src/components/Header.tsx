@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { Github, ExternalLink } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
+import { motion } from "framer-motion";
+import { Github, ExternalLink } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
   return (
@@ -34,31 +34,62 @@ const Header = () => {
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{
-              scale: 1.08,
-              boxShadow: '0 0 32px 8px rgba(216,96,114,0.25)',
+              scale: 1.07,
+              boxShadow: "0 4px 32px 0 rgba(216,96,114,0.18)",
             }}
             whileTap={{ scale: 0.96 }}
-            className="relative flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-to-r from-accent to-secondary text-[hsl(var(--accent-foreground))] font-semibold shadow-lg overflow-visible focus:ring-2 focus:ring-accent transition-all duration-200"
+            className="
+      relative flex items-center gap-2 px-5 py-2 rounded-xl
+      bg-gradient-to-r from-primary to-accent text-primary-foreground
+      font-semibold shadow-lg overflow-visible
+      focus:ring-2 focus:ring-accent
+      transition-all duration-200 group
+      dark:bg-gradient-to-r dark:from-destructive dark:to-border dark:text-[hsl(var(--muted-foreground))]
+    "
             style={{ zIndex: 1 }}
           >
-            <Github size={18} />
-            <span className="hidden sm:inline drop-shadow-lg">View on GitHub</span>
-            <ExternalLink size={15} />
-            {/* Sparkles */}
-            <span className="absolute -top-2 -left-2 animate-sparkle1 pointer-events-none">
-              ✨
+            {/* Flowing Glow */}
+            <span
+              className="
+        absolute -inset-1 rounded-xl
+        bg-gradient-to-r from-accent/30 via-primary/20 to-accent/30
+        blur-lg opacity-70 group-hover:opacity-100 animate-glow pointer-events-none
+        dark:from-[hsl(var(--muted)/0.3)] dark:via-[hsl(var(--primary)/0.2)] dark:to-[hsl(var(--muted)/0.3)]
+      "
+            ></span>
+            {/* Sparkle SVG */}
+            <span className="absolute left-2 top-1/2 -translate-y-1/2 animate-sparkle pointer-events-none">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <g filter="url(#sparkle)">
+                  <path
+                    d="M9 2L10.09 6.26L14 7.27L10.91 9.74L12 14L9 11.27L6 14L7.09 9.74L4 7.27L7.91 6.26L9 2Z"
+                    fill="#D86072"
+                  />
+                </g>
+                <defs>
+                  <filter
+                    id="sparkle"
+                    x="0"
+                    y="0"
+                    width="18"
+                    height="18"
+                    filterUnits="userSpaceOnUse"
+                  >
+                    <feGaussianBlur stdDeviation="0.5" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+              </svg>
             </span>
-            <span className="absolute -bottom-2 left-1/2 animate-sparkle2 pointer-events-none">
-              ✨
+            <Github size={18} className="relative z-10" />
+            <span className="hidden sm:inline drop-shadow-lg relative z-10">
+              View on GitHub
             </span>
-            <span className="absolute -top-3 right-2 animate-sparkle3 pointer-events-none">
-              ✨
-            </span>
-            <span className="absolute bottom-0 right-0 animate-sparkle4 pointer-events-none">
-              ✨
-            </span>
+            <ExternalLink size={15} className="relative z-10" />
           </motion.a>
-
           <ThemeToggle />
         </div>
       </div>
