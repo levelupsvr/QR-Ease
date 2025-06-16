@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface QRSettings {
@@ -17,6 +18,7 @@ export interface QRSettings {
   labelSize: number;
   labelFont: 'inter' | 'serif' | 'mono';
   labelAlignment: 'left' | 'center' | 'right';
+  labelWeight: 'normal' | 'semibold' | 'bold';
   gradientEnabled: boolean;
   gradientColor1: string;
   gradientColor2: string;
@@ -49,6 +51,7 @@ const defaultSettings: QRSettings = {
   labelSize: 16,
   labelFont: 'inter',
   labelAlignment: 'center',
+  labelWeight: 'normal',
   gradientEnabled: false,
   gradientColor1: '#764A4D',
   gradientColor2: '#C69390',

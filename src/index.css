@@ -52,16 +52,16 @@
 
 @layer base {
   * {
-    @apply border-border cursor-custom;
+    @apply border-border;
   }
   
   body {
     @apply bg-background text-foreground font-inter;
-    cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iIzJGMUIyMyIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPC9zdmc+) 12 12, auto;
+    cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNSIgZmlsbD0iIzc2NEE0RCIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMiIgZmlsbD0iIzJGMUIyMyIvPgo8L3N2Zz4=) 12 12, auto;
   }
 }
 
-/* Custom cursor effects */
+/* Enhanced cursor effects with theme colors */
 .cursor-glow {
   position: relative;
   overflow: hidden;
@@ -74,17 +74,17 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: radial-gradient(circle, rgba(47, 27, 35, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(118, 74, 77, 0.2) 0%, rgba(198, 147, 144, 0.1) 50%, transparent 70%);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   z-index: 0;
 }
 
 .cursor-glow:hover::before {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
 }
 
 /* Interactive element hover effects */
@@ -95,50 +95,51 @@ button, .interactive {
 }
 
 button:hover, .interactive:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(118, 74, 77, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(118, 74, 77, 0.25);
 }
 
 button:active, .interactive:active {
   transform: translateY(0px);
 }
 
-/* Custom scrollbar with original palette */
+/* Custom scrollbar with theme colors */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(206, 178, 183, 0.2);
 }
 
 ::-webkit-scrollbar-thumb {
   background: #C69390;
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #764A4D;
 }
 
-/* Custom slider styles with original palette */
+/* Custom slider styles with theme colors */
 .slider::-webkit-slider-thumb {
   appearance: none;
-  height: 20px;
-  width: 20px;
-  background: #2F1B23;
+  height: 22px;
+  width: 22px;
+  background: linear-gradient(135deg, #764A4D, #C69390);
   cursor: pointer;
-  border-radius: 0;
-  border: 2px solid #764A4D;
+  border-radius: 50%;
+  border: 2px solid #2F1B23;
+  box-shadow: 0 2px 8px rgba(118, 74, 77, 0.3);
 }
 
 .slider::-moz-range-thumb {
-  height: 20px;
-  width: 20px;
-  background: #2F1B23;
+  height: 22px;
+  width: 22px;
+  background: linear-gradient(135deg, #764A4D, #C69390);
   cursor: pointer;
-  border-radius: 0;
-  border: 2px solid #764A4D;
+  border-radius: 50%;
+  border: 2px solid #2F1B23;
 }
 
 /* Smooth transitions */
@@ -151,25 +152,7 @@ input[type="file"] {
   @apply hidden;
 }
 
-/* Glass effect backdrop filter support */
-@supports (backdrop-filter: blur(6px)) {
-  .backdrop-blur-md {
-    backdrop-filter: blur(6px);
-  }
-}
-
-/* Animated background decorations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(120deg); }
-  66% { transform: translateY(10px) rotate(240deg); }
-}
-
-.floating-decoration {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Ripple effect for clicks */
+/* Ripple effect for clicks with theme colors */
 .ripple {
   position: relative;
   overflow: hidden;
@@ -182,13 +165,24 @@ input[type="file"] {
   left: 50%;
   width: 0;
   height: 0;
-  background: radial-gradient(circle, rgba(47, 27, 35, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(118, 74, 77, 0.4) 0%, transparent 70%);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
+  transition: width 0.8s, height 0.8s;
 }
 
 .ripple:active::after {
   width: 200px;
   height: 200px;
+}
+
+/* Animated background decorations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-15px) rotate(120deg); }
+  66% { transform: translateY(15px) rotate(240deg); }
+}
+
+.floating-decoration {
+  animation: float 8s ease-in-out infinite;
 }

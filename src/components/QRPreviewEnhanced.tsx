@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import QRCodeStyling from 'qr-code-styling';
 import { useQR } from '../contexts/QRContext';
 import GlassCard from './GlassCard';
+import QRDesignCustomization from './customization/QRDesignCustomization';
 
 const QRPreviewEnhanced = () => {
   const { settings } = useQR();
@@ -25,6 +26,16 @@ const QRPreviewEnhanced = () => {
           formattedData = `tel:${settings.data}`;
         }
 
+        // Create gradient if enabled
+        let dotsColor = settings.foregroundColor;
+        if (settings.gradientEnabled) {
+          if (settings.gradientType === 'linear') {
+            dotsColor = `linear-gradient(45deg, ${settings.gradientColor1}, ${settings.gradientColor2})`;
+          } else {
+            dotsColor = `radial-gradient(circle, ${settings.gradientColor1}, ${settings.gradientColor2})`;
+          }
+        }
+
         const qrOptions = {
           width: settings.size,
           height: settings.size,
@@ -38,23 +49,24 @@ const QRPreviewEnhanced = () => {
           },
           imageOptions: {
             hideBackgroundDots: true,
-            imageSize: 0.4,
+            imageSize: settings.logoSize / 100,
             margin: 0,
             crossOrigin: 'anonymous' as const,
           },
           dotsOptions: {
-            color: settings.foregroundColor,
-            type: settings.dotType === 'rounded' ? ('rounded' as const) : ('square' as const),
+            color: settings.gradientEnabled ? settings.gradientColor1 : settings.foregroundColor,
+            type: settings.dotType === 'rounded' ? ('rounded' as const) : 
+                  settings.dotType === 'circle' ? ('dots' as const) : ('square' as const),
           },
           backgroundOptions: {
             color: settings.backgroundColor,
           },
           cornersSquareOptions: {
-            color: settings.foregroundColor,
+            color: settings.gradientEnabled ? settings.gradientColor1 : settings.foregroundColor,
             type: settings.dotType === 'rounded' ? ('extra-rounded' as const) : ('square' as const),
           },
           cornersDotOptions: {
-            color: settings.foregroundColor,
+            color: settings.gradientEnabled ? settings.gradientColor1 : settings.foregroundColor,
             type: settings.dotType === 'rounded' ? ('dot' as const) : ('square' as const),
           },
         };
@@ -62,7 +74,7 @@ const QRPreviewEnhanced = () => {
         if (settings.logo) {
           qrOptions.imageOptions = {
             ...qrOptions.imageOptions,
-            imageSize: 0.25,
+            imageSize: settings.logoSize / 100,
             margin: 5,
           };
           (qrOptions as any).image = settings.logo;
@@ -89,11 +101,27 @@ const QRPreviewEnhanced = () => {
     return () => clearTimeout(timeoutId);
   }, [settings]);
 
+  const getFontWeight = () => {
+    switch (settings.labelWeight) {
+      case 'bold': return 'font-bold';
+      case 'semibold': return 'font-semibold';
+      default: return 'font-normal';
+    }
+  };
+
+  const getTextAlign = () => {
+    switch (settings.labelAlignment) {
+      case 'left': return 'text-left';
+      case 'right': return 'text-right';
+      default: return 'text-center';
+    }
+  };
+
   return (
     <motion.div
       initial={{ x: 20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="h-full flex flex-col items-center justify-center p-8"
+      className="h-full flex flex-col p-8"
     >
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-raisin-black dark:text-silver-pink mb-2">
@@ -104,7 +132,7 @@ const QRPreviewEnhanced = () => {
         </p>
       </div>
 
-      <GlassCard className="p-8 relative">
+      <GlassCard className="p-8 relative mb-8">
         <motion.div
           className="relative"
           animate={isGenerating ? { scale: 0.95, opacity: 0.7 } : { scale: 1, opacity: 1 }}
@@ -121,16 +149,21 @@ const QRPreviewEnhanced = () => {
               <div
                 ref={qrRef}
                 className="bg-white p-4 shadow-lg"
-                style={{ backgroundColor: settings.backgroundColor }}
+                style={{ 
+                  backgroundColor: settings.backgroundColor,
+                  filter: settings.glowEffect ? `drop-shadow(0 0 20px ${settings.outlineColor})` : 'none'
+                }}
               />
               {settings.labelText && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 text-center"
+                  className={`mt-4 ${getTextAlign()} ${getFontWeight()}`}
                   style={{
                     color: settings.labelColor,
                     fontSize: `${settings.labelSize}px`,
+                    fontFamily: settings.labelFont === 'serif' ? 'serif' : 
+                               settings.labelFont === 'mono' ? 'monospace' : 'Inter'
                   }}
                 >
                   {settings.labelText}
@@ -150,6 +183,11 @@ const QRPreviewEnhanced = () => {
           </motion.div>
         )}
       </GlassCard>
+
+      {/* Design & Effects moved here */}
+      <div className="flex-1 overflow-y-auto">
+        <QRDesignCustomization />
+      </div>
     </motion.div>
   );
 };
