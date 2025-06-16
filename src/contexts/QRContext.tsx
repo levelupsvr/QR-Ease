@@ -9,11 +9,22 @@ export interface QRSettings {
   size: number;
   margin: number;
   errorCorrectionLevel: 'L' | 'M' | 'Q' | 'H';
-  dotType: 'square' | 'rounded';
+  dotType: 'square' | 'rounded' | 'circle' | 'sharp';
   logo: string | null;
+  logoSize: number;
+  logoOpacity: number;
   labelText: string;
   labelColor: string;
   labelSize: number;
+  labelFont: 'inter' | 'serif' | 'mono';
+  labelAlignment: 'left' | 'center' | 'right';
+  gradientEnabled: boolean;
+  gradientColor1: string;
+  gradientColor2: string;
+  gradientType: 'linear' | 'radial';
+  backgroundPattern: 'none' | 'dots' | 'grid' | 'diagonal';
+  glowEffect: boolean;
+  outlineColor: string;
 }
 
 interface QRContextType {
@@ -25,16 +36,27 @@ interface QRContextType {
 const defaultSettings: QRSettings = {
   type: 'url',
   data: '',
-  foregroundColor: '#2F1B23',
-  backgroundColor: '#FFFFFF',
+  foregroundColor: '#2E2D38',
+  backgroundColor: '#F2E9E4',
   size: 300,
   margin: 4,
   errorCorrectionLevel: 'M',
   dotType: 'square',
   logo: null,
+  logoSize: 25,
+  logoOpacity: 100,
   labelText: '',
-  labelColor: '#2F1B23',
+  labelColor: '#2E2D38',
   labelSize: 16,
+  labelFont: 'inter',
+  labelAlignment: 'center',
+  gradientEnabled: false,
+  gradientColor1: '#E3BFC6',
+  gradientColor2: '#C9ADA7',
+  gradientType: 'linear',
+  backgroundPattern: 'none',
+  glowEffect: false,
+  outlineColor: '#889CA3',
 };
 
 const QRContext = createContext<QRContextType | undefined>(undefined);

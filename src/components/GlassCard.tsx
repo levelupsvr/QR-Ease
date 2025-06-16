@@ -20,9 +20,12 @@ const GlassCard = ({ children, className, animate = true }: GlassCardProps) => {
   return (
     <Component
       className={cn(
-        "backdrop-blur-md bg-white/10 dark:bg-raisin-black/10",
-        "border border-white/20 dark:border-rosy-brown/20",
-        "shadow-lg shadow-black/5 dark:shadow-black/20",
+        "backdrop-blur-md bg-white/20 dark:bg-raisin-black/10",
+        "border border-pale-rosewood/30 dark:border-rosy-brown/20",
+        "shadow-lg shadow-fairy-tale-pink/5 dark:shadow-black/20",
+        "rounded-lg overflow-hidden",
+        "hover:shadow-xl hover:shadow-fairy-tale-pink/10 transition-all duration-300",
+        "cursor-glow ripple",
         className
       )}
       {...animationProps}

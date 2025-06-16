@@ -53,7 +53,7 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
 
     try {
       const canvas = await html2canvas(downloadRef.current, {
-        backgroundColor: '#ffffff',
+        backgroundColor: '#F2E9E4',
         scale: 2,
         width: 400,
         height: settings.labelText ? 480 : 440,
@@ -71,8 +71,8 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
 
   if (!settings.data) {
     return (
-      <div className="bg-tan dark:bg-rosy-brown p-4 text-center">
-        <p className="text-raisin-black dark:text-silver-pink">
+      <div className="bg-pale-rosewood dark:bg-rosy-brown p-4 text-center">
+        <p className="text-charcoal-navy dark:text-silver-pink">
           Generate a QR code to enable downloads
         </p>
       </div>
@@ -83,9 +83,9 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
     <motion.div
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="bg-tan dark:bg-rosy-brown p-4"
+      className="bg-pale-rosewood dark:bg-rosy-brown p-4"
     >
-      <h3 className="text-lg font-semibold text-raisin-black dark:text-silver-pink mb-4 text-center">
+      <h3 className="text-lg font-semibold text-charcoal-navy dark:text-silver-pink mb-4 text-center">
         Download Options
       </h3>
       
@@ -94,7 +94,7 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           onClick={downloadPNG}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 p-3 bg-tuscan-red text-white hover:bg-raisin-black transition-colors"
+          className="flex items-center justify-center gap-2 p-3 bg-charcoal-navy text-white hover:bg-fairy-tale-pink hover:text-charcoal-navy transition-colors rounded-lg ripple"
         >
           <Image size={16} />
           PNG
@@ -104,7 +104,7 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           onClick={downloadSVG}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 p-3 bg-tuscan-red text-white hover:bg-raisin-black transition-colors"
+          className="flex items-center justify-center gap-2 p-3 bg-charcoal-navy text-white hover:bg-fairy-tale-pink hover:text-charcoal-navy transition-colors rounded-lg ripple"
         >
           <FileText size={16} />
           SVG
@@ -114,7 +114,7 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           onClick={downloadScreenshot}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 p-3 bg-tuscan-red text-white hover:bg-raisin-black transition-colors"
+          className="flex items-center justify-center gap-2 p-3 bg-charcoal-navy text-white hover:bg-fairy-tale-pink hover:text-charcoal-navy transition-colors rounded-lg ripple"
         >
           <Camera size={16} />
           Screenshot
