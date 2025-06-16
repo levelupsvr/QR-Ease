@@ -78,6 +78,26 @@
   background: #764A4D;
 }
 
+/* Custom slider styles */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  background: #764A4D;
+  cursor: pointer;
+  border-radius: 0;
+  border: 2px solid #DCB39A;
+}
+
+.slider::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  background: #764A4D;
+  cursor: pointer;
+  border-radius: 0;
+  border: 2px solid #DCB39A;
+}
+
 /* Smooth transitions */
 * {
   transition: all 0.2s ease-in-out;
@@ -86,4 +106,11 @@
 /* Hide default file input */
 input[type="file"] {
   @apply hidden;
+}
+
+/* Glass effect backdrop filter support */
+@supports (backdrop-filter: blur(6px)) {
+  .backdrop-blur-md {
+    backdrop-filter: blur(6px);
+  }
 }

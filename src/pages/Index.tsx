@@ -1,55 +1,46 @@
 
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import QRCustomizer from '../components/QRCustomizer';
-import QRPreview from '../components/QRPreview';
+import QRCustomizerEnhanced from '../components/QRCustomizerEnhanced';
+import QRPreviewEnhanced from '../components/QRPreviewEnhanced';
 import DownloadPanel from '../components/DownloadPanel';
-import type { QRSettings } from '../components/QRCustomizer';
+import BackgroundEffects from '../components/BackgroundEffects';
+import { QRProvider } from '../contexts/QRContext';
 
 const Index = () => {
   const qrRef = useRef<HTMLDivElement>(null);
-  const [settings, setSettings] = useState<QRSettings>({
-    type: 'url',
-    data: '',
-    foregroundColor: '#2F1B23',
-    backgroundColor: '#FFFFFF',
-    size: 300,
-    margin: 4,
-    errorCorrectionLevel: 'M',
-    dotType: 'square',
-    logo: null,
-    labelText: '',
-    labelColor: '#2F1B23',
-    labelSize: 16,
-  });
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-silver-pink to-tan dark:from-raisin-black dark:to-tuscan-red">
-      <Header />
-      
-      <main className="flex-1 flex flex-col">
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 min-h-0">
-          {/* Left Panel - Customizer */}
-          <div className="order-2 lg:order-1">
-            <QRCustomizer settings={settings} onSettingsChange={setSettings} />
-          </div>
-          
-          {/* Right Panel - Preview */}
-          <div className="order-1 lg:order-2 relative">
-            <div ref={qrRef}>
-              <QRPreview settings={settings} />
+    <QRProvider>
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-silver-pink/30 to-tan/30 dark:from-raisin-black to-tuscan-red/20 relative">
+        <BackgroundEffects />
+        
+        <Header />
+        
+        <main className="flex-1 flex flex-col relative z-10">
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 min-h-0">
+            {/* Left Panel - Customizer */}
+            <div className="order-2 lg:order-1">
+              <QRCustomizerEnhanced />
+            </div>
+            
+            {/* Right Panel - Preview */}
+            <div className="order-1 lg:order-2 relative">
+              <div ref={qrRef}>
+                <QRPreviewEnhanced />
+              </div>
             </div>
           </div>
-        </div>
+          
+          {/* Download Panel */}
+          <DownloadPanel qrRef={qrRef} />
+        </main>
         
-        {/* Download Panel */}
-        <DownloadPanel settings={settings} qrRef={qrRef} />
-      </main>
-      
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </QRProvider>
   );
 };
 
