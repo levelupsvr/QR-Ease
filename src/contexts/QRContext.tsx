@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface QRSettings {
@@ -36,8 +35,8 @@ interface QRContextType {
 const defaultSettings: QRSettings = {
   type: 'url',
   data: '',
-  foregroundColor: '#2E2D38',
-  backgroundColor: '#F2E9E4',
+  foregroundColor: '#2F1B23',
+  backgroundColor: '#DCB39A',
   size: 300,
   margin: 4,
   errorCorrectionLevel: 'M',
@@ -46,17 +45,17 @@ const defaultSettings: QRSettings = {
   logoSize: 25,
   logoOpacity: 100,
   labelText: '',
-  labelColor: '#2E2D38',
+  labelColor: '#2F1B23',
   labelSize: 16,
   labelFont: 'inter',
   labelAlignment: 'center',
   gradientEnabled: false,
-  gradientColor1: '#E3BFC6',
-  gradientColor2: '#C9ADA7',
+  gradientColor1: '#764A4D',
+  gradientColor2: '#C69390',
   gradientType: 'linear',
   backgroundPattern: 'none',
   glowEffect: false,
-  outlineColor: '#889CA3',
+  outlineColor: '#CEB2B7',
 };
 
 const QRContext = createContext<QRContextType | undefined>(undefined);

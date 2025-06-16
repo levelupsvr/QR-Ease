@@ -23,14 +23,7 @@ export default {
 				'inter': ['Inter', 'sans-serif'],
 			},
 			colors: {
-				// New elegant pastel palette
-				'fairy-tale-pink': '#E3BFC6',
-				'pale-rosewood': '#C9ADA7',
-				'isabelline': '#F2E9E4',
-				'cadet-grey': '#889CA3',
-				'charcoal-navy': '#2E2D38',
-				
-				// Legacy colors for dark mode compatibility
+				// Original color palette
 				'silver-pink': '#CEB2B7',
 				'raisin-black': '#2F1B23',
 				'tuscan-red': '#764A4D',
@@ -88,13 +81,12 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'fairy-gradient': 'linear-gradient(135deg, #F2E9E4 0%, #E3BFC6 50%, #C9ADA7 100%)',
 			},
 			spacing: {
 				'8': '2rem',
 			},
 			cursor: {
-				'custom': 'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iIzJFMkQzOCIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPC9zdmc+) 12 12, auto',
+				'custom': 'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iIzJGMUIyMyIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPC9zdmc+) 12 12, auto',
 			},
 			keyframes: {
 				'cursor-pulse': {
