@@ -4,14 +4,14 @@ import { Download, Image, FileText, Camera } from 'lucide-react';
 import { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
-import type { QRSettings } from './QRCustomizer';
+import { useQR } from '../contexts/QRContext';
 
 interface DownloadPanelProps {
-  settings: QRSettings;
   qrRef: React.RefObject<HTMLDivElement>;
 }
 
-const DownloadPanel = ({ settings, qrRef }: DownloadPanelProps) => {
+const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
+  const { settings } = useQR();
   const downloadRef = useRef<HTMLDivElement>(null);
 
   const downloadPNG = async () => {
