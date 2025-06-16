@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { Download, Image, FileText, Camera } from 'lucide-react';
 import { useRef } from 'react';
@@ -17,20 +16,41 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
   const downloadPNG = async () => {
     if (!qrRef.current || !settings.data) return;
 
-    try {
-      const canvas = await html2canvas(qrRef.current, {
-        backgroundColor: settings.backgroundColor,
-        scale: 2,
-      });
-      
-      canvas.toBlob((blob) => {
-        if (blob) {
-          saveAs(blob, 'qr-code.png');
-        }
-      });
-    } catch (error) {
-      console.error('Error downloading PNG:', error);
-    }
+    // Find the SVG element inside the QR container
+    const svg = qrRef.current.querySelector('svg');
+    if (!svg) return;
+
+    // Serialize SVG to a string
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svg);
+
+    // Create an image from the SVG string
+    const img = new window.Image();
+    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = () => {
+      // Create a canvas with the same size as the SVG
+      const width = svg.width.baseVal.value || 512;
+      const height = svg.height.baseVal.value || 512;
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            saveAs(blob, 'qr-code.png');
+          }
+          URL.revokeObjectURL(url);
+        });
+      }
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
   };
 
   const downloadSVG = () => {
@@ -49,7 +69,55 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
   };
 
   const downloadScreenshot = async () => {
-    if (!downloadRef.current || !settings.data) return;
+    if (!qrRef.current || !settings.data) return;
+
+    const svg = qrRef.current.querySelector('svg');
+    if (svg) {
+      const serializer = new XMLSerializer();
+      let svgString = serializer.serializeToString(svg);
+
+      // Ensure xmlns is present
+      if (!svgString.includes('xmlns="http://www.w3.org/2000/svg"')) {
+        svgString = svgString.replace(
+          '<svg',
+          '<svg xmlns="http://www.w3.org/2000/svg"'
+        );
+      }
+
+      const img = new window.Image();
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+
+      img.onload = () => {
+        const width = svg.width.baseVal.value || 400;
+        const height = svg.height.baseVal.value || 400;
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          // Fill white background
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(img, 0, 0, width, height);
+          canvas.toBlob((blob) => {
+            if (blob) {
+              saveAs(blob, 'qr-code.png');
+            }
+            URL.revokeObjectURL(url);
+          });
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        alert('Failed to load SVG image for download.');
+      };
+      img.src = url;
+      return;
+    }
+
+    // Fallback for non-SVG QR codes
+    if (!downloadRef.current) return;
 
     try {
       const canvas = await html2canvas(downloadRef.current, {
