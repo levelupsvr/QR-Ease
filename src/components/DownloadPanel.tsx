@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Download, Image, FileText, Camera } from 'lucide-react';
+import { Image, FileText, Camera } from 'lucide-react';
 import { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
@@ -15,132 +15,141 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
 
   const downloadPNG = async () => {
     if (!qrRef.current || !settings.data) return;
-
-    // Find the SVG element inside the QR container
     const svg = qrRef.current.querySelector('svg');
     if (!svg) return;
 
-    // Serialize SVG to a string
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(svg);
-
-    // Create an image from the SVG string
     const img = new window.Image();
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
 
     img.onload = () => {
-      // Create a canvas with the same size as the SVG
       const width = svg.width.baseVal.value || 512;
       const height = svg.height.baseVal.value || 512;
+      // Increase canvas height for the label
+      const labelFontSize = 32;
+      const labelPadding = 24;
+      const labelHeight = settings.labelText ? labelFontSize + labelPadding : 0;
       const canvas = document.createElement('canvas');
       canvas.width = width;
-      canvas.height = height;
+      canvas.height = height + labelHeight;
       const ctx = canvas.getContext('2d');
       if (ctx) {
+        // Draw QR code
         ctx.drawImage(img, 0, 0, width, height);
+        // Draw label if present
+        if (settings.labelText) {
+          ctx.font = `bold ${labelFontSize}px Inter, Arial, sans-serif`;
+          ctx.fillStyle = settings.labelColor || "#000";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "top";
+          ctx.fillText(
+            settings.labelText,
+            width / 2,
+            height + labelPadding / 2
+          );
+        }
         canvas.toBlob((blob) => {
-          if (blob) {
-            saveAs(blob, 'qr-code.png');
-          }
+          if (blob) saveAs(blob, 'qr-code.png');
           URL.revokeObjectURL(url);
         });
       }
     };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-    };
+
+    img.onerror = () => URL.revokeObjectURL(url);
     img.src = url;
   };
 
   const downloadSVG = () => {
     if (!qrRef.current || !settings.data) return;
+    const svg = qrRef.current.querySelector('svg');
+    if (!svg) return;
 
-    try {
-      const svgElement = qrRef.current.querySelector('svg');
-      if (svgElement) {
-        const svgData = new XMLSerializer().serializeToString(svgElement);
-        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        saveAs(svgBlob, 'qr-code.svg');
-      }
-    } catch (error) {
-      console.error('Error downloading SVG:', error);
+    const serializer = new XMLSerializer();
+    let svgString = serializer.serializeToString(svg);
+
+    if (settings.labelText) {
+      const width = svg.width.baseVal.value || 512;
+      const height = svg.height.baseVal.value || 512;
+      const labelFontSize = 32;
+      const labelPadding = 24;
+      const labelHeight = labelFontSize + labelPadding;
+      const newHeight = height + labelHeight;
+
+      // Update SVG height and viewBox
+      svgString = svgString
+        .replace(/height="([^"]*)"/, `height="${newHeight}"`)
+        .replace(/viewBox="([^"]+)"/, `viewBox="0 0 ${width} ${newHeight}"`);
+
+      // Insert label before </svg>
+      const labelTextSVG = `
+        <text
+          x="${width / 2}"
+          y="${height + labelFontSize}"
+          text-anchor="middle"
+          font-size="${labelFontSize}"
+          font-family="Inter, Arial, sans-serif"
+          fill="${settings.labelColor || '#000'}"
+          font-weight="bold"
+        >${settings.labelText}</text>
+      `;
+      svgString = svgString.replace('</svg>', `${labelTextSVG}</svg>`);
     }
+
+    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    saveAs(blob, 'qr-code.svg');
   };
 
   const downloadScreenshot = async () => {
     if (!qrRef.current || !settings.data) return;
-
     const svg = qrRef.current.querySelector('svg');
-    if (svg) {
-      const serializer = new XMLSerializer();
-      let svgString = serializer.serializeToString(svg);
+    if (!svg) return;
 
-      // Ensure xmlns is present
-      if (!svgString.includes('xmlns="http://www.w3.org/2000/svg"')) {
-        svgString = svgString.replace(
-          '<svg',
-          '<svg xmlns="http://www.w3.org/2000/svg"'
-        );
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svg);
+    const img = new window.Image();
+    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = () => {
+      const width = svg.width.baseVal.value || 512;
+      const height = svg.height.baseVal.value || 512;
+      const labelFontSize = 32;
+      const labelPadding = 24;
+      const labelHeight = settings.labelText ? labelFontSize + labelPadding : 0;
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height + labelHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, width, height);
+        if (settings.labelText) {
+          ctx.font = `bold ${labelFontSize}px Inter, Arial, sans-serif`;
+          ctx.fillStyle = settings.labelColor || "#000";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "top";
+          ctx.fillText(
+            settings.labelText,
+            width / 2,
+            height + labelPadding / 2
+          );
+        }
+        canvas.toBlob((blob) => {
+          if (blob) saveAs(blob, 'qr-code-screenshot.png');
+          URL.revokeObjectURL(url);
+        });
       }
+    };
 
-      const img = new window.Image();
-      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(svgBlob);
-
-      img.onload = () => {
-        const width = svg.width.baseVal.value || 400;
-        const height = svg.height.baseVal.value || 400;
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          // Fill white background
-          ctx.fillStyle = "#fff";
-          ctx.fillRect(0, 0, width, height);
-          ctx.drawImage(img, 0, 0, width, height);
-          canvas.toBlob((blob) => {
-            if (blob) {
-              saveAs(blob, 'qr-code.png');
-            }
-            URL.revokeObjectURL(url);
-          });
-        }
-      };
-      img.onerror = () => {
-        URL.revokeObjectURL(url);
-        alert('Failed to load SVG image for download.');
-      };
-      img.src = url;
-      return;
-    }
-
-    // Fallback for non-SVG QR codes
-    if (!downloadRef.current) return;
-
-    try {
-      const canvas = await html2canvas(downloadRef.current, {
-        backgroundColor: '#F2E9E4',
-        scale: 2,
-        width: 400,
-        height: settings.labelText ? 480 : 440,
-      });
-      
-      canvas.toBlob((blob) => {
-        if (blob) {
-          saveAs(blob, 'qr-code-screenshot.png');
-        }
-      });
-    } catch (error) {
-      console.error('Error downloading screenshot:', error);
-    }
+    img.onerror = () => URL.revokeObjectURL(url);
+    img.src = url;
   };
 
   if (!settings.data) {
     return (
-      <div className="bg-pale-rosewood dark:bg-rosy-brown p-4 text-center">
-        <p className="text-charcoal-navy dark:text-silver-pink">
+      <div className="p-4 text-center bg-accent dark:bg-rosy-brown">
+        <p className="text-[hsl(var(--destructive-foreground))] dark:text-silver-pink">
           Generate a QR code to enable downloads
         </p>
       </div>
@@ -151,47 +160,47 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
     <motion.div
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="bg-pale-rosewood dark:bg-rosy-brown p-4"
+      className="p-4 bg-accent border border-destructive dark:bg-rosy-brown"
     >
-      <h3 className="text-lg font-semibold text-charcoal-navy dark:text-silver-pink mb-4 text-center">
+      <h3 className="mb-4 text-center text-lg font-semibold text-[hsl(var(--foreground))] dark:text-ring">
         Download Options
       </h3>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <motion.button
           onClick={downloadPNG}
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.05, boxShadow: "0 8px 24px 0 rgba(0,0,0,0.18)" }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 p-3 bg-charcoal-navy text-white hover:bg-fairy-tale-pink hover:text-charcoal-navy transition-colors rounded-lg ripple"
+          className="flex items-center justify-center gap-2 rounded-lg p-3 bg-primary text-[hsl(var(--primary-foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] transition-colors  dark:text-[var(--background)]"
         >
           <Image size={16} />
           PNG
         </motion.button>
-        
+
         <motion.button
           onClick={downloadSVG}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 p-3 bg-charcoal-navy text-white hover:bg-fairy-tale-pink hover:text-charcoal-navy transition-colors rounded-lg ripple"
+          className="flex items-center justify-center gap-2 rounded-lg p-3 bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] transition-colors  dark:text-[var(--background)]"
         >
           <FileText size={16} />
           SVG
         </motion.button>
-        
+
         <motion.button
           onClick={downloadScreenshot}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 p-3 bg-charcoal-navy text-white hover:bg-fairy-tale-pink hover:text-charcoal-navy transition-colors rounded-lg ripple"
+          className="flex items-center justify-center gap-2 rounded-lg p-3 bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] transition-colors  dark:text-[var(--background)]"
         >
           <Camera size={16} />
           Screenshot
         </motion.button>
       </div>
 
-      {/* Hidden element for screenshot generation */}
+      {/* Hidden element for screenshot */}
       <div ref={downloadRef} className="hidden">
-        <div className="bg-white p-8 w-96">
+        <div className="w-96 bg-white p-8">
           {qrRef.current && (
             <div dangerouslySetInnerHTML={{ __html: qrRef.current.innerHTML }} />
           )}
@@ -213,3 +222,4 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
 };
 
 export default DownloadPanel;
+

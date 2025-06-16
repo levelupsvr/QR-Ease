@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 import { SketchPicker } from 'react-color';
@@ -25,40 +24,29 @@ interface QRCustomizerProps {
 }
 
 const QRCustomizer = ({ settings, onSettingsChange }: QRCustomizerProps) => {
+  const [copied, setCopied] = useState(false);
   const [showForegroundPicker, setShowForegroundPicker] = useState(false);
   const [showBackgroundPicker, setShowBackgroundPicker] = useState(false);
   const [showLabelColorPicker, setShowLabelColorPicker] = useState(false);
-  const [copied, setCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const updateSettings = (updates: Partial<QRSettings>) => {
     onSettingsChange({ ...settings, ...updates });
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        updateSettings({ logo: e.target?.result as string });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const resetSettings = () => {
     onSettingsChange({
       type: 'url',
       data: '',
-      foregroundColor: '#2F1B23',
-      backgroundColor: '#FFFFFF',
+      foregroundColor: 'hsl(var(--foreground))',
+      backgroundColor: 'hsl(var(--background))',
       size: 300,
       margin: 4,
       errorCorrectionLevel: 'M',
       dotType: 'square',
       logo: null,
       labelText: '',
-      labelColor: '#2F1B23',
+      labelColor: 'hsl(var(--foreground))',
       labelSize: 16,
     });
   };
@@ -68,8 +56,19 @@ const QRCustomizer = ({ settings, onSettingsChange }: QRCustomizerProps) => {
       await navigator.clipboard.writeText(settings.data);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
+    } catch (error) {
+      console.error('Copy failed:', error);
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file?.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        updateSettings({ logo: event.target?.result as string });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -77,21 +76,17 @@ const QRCustomizer = ({ settings, onSettingsChange }: QRCustomizerProps) => {
     <motion.div
       initial={{ x: -20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="bg-silver-pink dark:bg-raisin-black p-6 h-full overflow-y-auto"
+      className="p-6 text-[hsl(var(--foreground))]"
     >
-      <h2 className="text-2xl font-bold text-raisin-black dark:text-silver-pink mb-6">
-        Customize QR Code
-      </h2>
+      <h2 className="text-2xl font-bold mb-6">Customize QR Code</h2>
 
-      {/* QR Type Selection */}
+      {/* Type */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-          QR Type
-        </label>
+        <label className="block mb-2 text-sm font-medium">QR Type</label>
         <select
           value={settings.type}
           onChange={(e) => updateSettings({ type: e.target.value as QRSettings['type'] })}
-          className="w-full p-3 bg-white dark:bg-tuscan-red text-raisin-black dark:text-white border-2 border-tan dark:border-rosy-brown focus:border-tuscan-red dark:focus:border-tan outline-none"
+          className="w-full p-3 bg-transparent text-[hsl(var(--foreground))] focus:ring-2 focus:ring-[hsl(var(--primary))] outline-none"
         >
           <option value="url">Website URL</option>
           <option value="text">Plain Text</option>
@@ -100,127 +95,90 @@ const QRCustomizer = ({ settings, onSettingsChange }: QRCustomizerProps) => {
         </select>
       </div>
 
-      {/* Data Input */}
+      {/* Data */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-          {settings.type === 'url' && 'Enter URL'}
-          {settings.type === 'text' && 'Enter Text'}
-          {settings.type === 'email' && 'Enter Email'}
-          {settings.type === 'phone' && 'Enter Phone Number'}
-        </label>
+        <label className="block mb-2 text-sm font-medium">Enter {settings.type}</label>
         <div className="relative">
           <input
             type="text"
             value={settings.data}
             onChange={(e) => updateSettings({ data: e.target.value })}
-            placeholder={
-              settings.type === 'url' ? 'https://example.com' :
-              settings.type === 'email' ? 'email@example.com' :
-              settings.type === 'phone' ? '+1234567890' : 'Enter text here...'
-            }
-            className="w-full p-3 pr-12 bg-white dark:bg-tuscan-red text-raisin-black dark:text-white border-2 border-tan dark:border-rosy-brown focus:border-tuscan-red dark:focus:border-tan outline-none"
+            className="w-full p-3 pr-10 bg-transparent text-[hsl(var(--foreground))] focus:ring-2 focus:ring-[hsl(var(--primary))] outline-none"
+            placeholder="Enter content..."
           />
           <button
             onClick={copyData}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-rosy-brown hover:text-tuscan-red"
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-[hsl(var(--primary))]"
           >
             {copied ? <Check size={16} /> : <Copy size={16} />}
           </button>
         </div>
       </div>
 
-      {/* Colors */}
+      {/* Color pickers */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-          Colors
-        </label>
+        <label className="block mb-2 text-sm font-medium">Colors</label>
         <div className="flex gap-4">
-          <div className="flex-1">
-            <label className="block text-xs text-rosy-brown mb-1">Foreground</label>
-            <div className="relative">
+          {[{
+            label: 'Foreground',
+            color: settings.foregroundColor,
+            toggle: showForegroundPicker,
+            setToggle: setShowForegroundPicker,
+            onChange: (color: string) => updateSettings({ foregroundColor: color })
+          }, {
+            label: 'Background',
+            color: settings.backgroundColor,
+            toggle: showBackgroundPicker,
+            setToggle: setShowBackgroundPicker,
+            onChange: (color: string) => updateSettings({ backgroundColor: color })
+          }].map(({ label, color, toggle, setToggle, onChange }) => (
+            <div key={label} className="flex-1">
+              <label className="text-xs block mb-1">{label}</label>
               <div
-                className="w-full h-10 border-2 border-tan dark:border-rosy-brown cursor-pointer"
-                style={{ backgroundColor: settings.foregroundColor }}
-                onClick={() => setShowForegroundPicker(!showForegroundPicker)}
+                className="w-full h-10 rounded-lg shadow cursor-pointer"
+                style={{ backgroundColor: color }}
+                onClick={() => setToggle(!toggle)}
               />
-              {showForegroundPicker && (
-                <div className="absolute top-12 left-0 z-10">
-                  <div
-                    className="fixed inset-0"
-                    onClick={() => setShowForegroundPicker(false)}
-                  />
-                  <SketchPicker
-                    color={settings.foregroundColor}
-                    onChange={(color) => updateSettings({ foregroundColor: color.hex })}
-                  />
+              {toggle && (
+                <div className="relative z-10 mt-2">
+                  <div className="fixed inset-0" onClick={() => setToggle(false)} />
+                  <SketchPicker color={color} onChange={(color) => onChange(color.hex)} />
                 </div>
               )}
             </div>
-          </div>
-          <div className="flex-1">
-            <label className="block text-xs text-rosy-brown mb-1">Background</label>
-            <div className="relative">
-              <div
-                className="w-full h-10 border-2 border-tan dark:border-rosy-brown cursor-pointer"
-                style={{ backgroundColor: settings.backgroundColor }}
-                onClick={() => setShowBackgroundPicker(!showBackgroundPicker)}
-              />
-              {showBackgroundPicker && (
-                <div className="absolute top-12 left-0 z-10">
-                  <div
-                    className="fixed inset-0"
-                    onClick={() => setShowBackgroundPicker(false)}
-                  />
-                  <SketchPicker
-                    color={settings.backgroundColor}
-                    onChange={(color) => updateSettings({ backgroundColor: color.hex })}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
       {/* Size & Margin */}
       <div className="mb-6">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-            Size: {settings.size}px
-          </label>
-          <input
-            type="range"
-            min="200"
-            max="500"
-            value={settings.size}
-            onChange={(e) => updateSettings({ size: parseInt(e.target.value) })}
-            className="w-full"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-            Margin: {settings.margin}px
-          </label>
-          <input
-            type="range"
-            min="0"
-            max="20"
-            value={settings.margin}
-            onChange={(e) => updateSettings({ margin: parseInt(e.target.value) })}
-            className="w-full"
-          />
-        </div>
+        {[
+          { label: 'Size', value: settings.size, key: 'size', min: 200, max: 500 },
+          { label: 'Margin', value: settings.margin, key: 'margin', min: 0, max: 20 }
+        ].map(({ label, value, key, min, max }) => (
+          <div className="mb-4" key={key}>
+            <label className="block text-sm font-medium mb-2">{label}: {value}px</label>
+            <input
+              type="range"
+              value={value}
+              min={min}
+              max={max}
+              onChange={(e) => updateSettings({ [key]: parseInt(e.target.value) } as any)}
+              className="w-full"
+            />
+          </div>
+        ))}
       </div>
 
       {/* Error Correction */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-          Error Correction Level
-        </label>
+        <label className="block text-sm font-medium mb-2">Error Correction</label>
         <select
           value={settings.errorCorrectionLevel}
-          onChange={(e) => updateSettings({ errorCorrectionLevel: e.target.value as QRSettings['errorCorrectionLevel'] })}
-          className="w-full p-3 bg-white dark:bg-tuscan-red text-raisin-black dark:text-white border-2 border-tan dark:border-rosy-brown focus:border-tuscan-red dark:focus:border-tan outline-none"
+          onChange={(e) =>
+            updateSettings({ errorCorrectionLevel: e.target.value as QRSettings['errorCorrectionLevel'] })
+          }
+          className="w-full p-3 bg-transparent text-[hsl(var(--foreground))] focus:ring-2 focus:ring-[hsl(var(--primary))] outline-none"
         >
           <option value="L">Low (7%)</option>
           <option value="M">Medium (15%)</option>
@@ -229,51 +187,41 @@ const QRCustomizer = ({ settings, onSettingsChange }: QRCustomizerProps) => {
         </select>
       </div>
 
-      {/* Dot Type */}
+      {/* Dot Style */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-          Dot Style
-        </label>
+        <label className="block text-sm font-medium mb-2">Dot Style</label>
         <div className="flex gap-2">
-          <button
-            onClick={() => updateSettings({ dotType: 'square' })}
-            className={`flex-1 p-3 border-2 ${
-              settings.dotType === 'square'
-                ? 'bg-tuscan-red text-white border-tuscan-red'
-                : 'bg-white dark:bg-transparent text-raisin-black dark:text-silver-pink border-tan dark:border-rosy-brown'
-            }`}
-          >
-            Square
-          </button>
-          <button
-            onClick={() => updateSettings({ dotType: 'rounded' })}
-            className={`flex-1 p-3 border-2 ${
-              settings.dotType === 'rounded'
-                ? 'bg-tuscan-red text-white border-tuscan-red'
-                : 'bg-white dark:bg-transparent text-raisin-black dark:text-silver-pink border-tan dark:border-rosy-brown'
-            }`}
-          >
-            Rounded
-          </button>
+          {['square', 'rounded'].map((type) => (
+            <button
+              key={type}
+              onClick={() => updateSettings({ dotType: type as QRSettings['dotType'] })}
+              className={`flex-1 p-2 rounded-full text-sm shadow transition ${
+                settings.dotType === type
+                  ? 'bg-[hsl(var(--primary))] text-white'
+                  : 'text-[hsl(var(--foreground))]'
+              }`}
+            >
+              {type}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Logo Upload */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-          Center Logo
-        </label>
+        <label className="block text-sm font-medium mb-2">Center Logo</label>
         <input
           ref={fileInputRef}
           type="file"
           accept="image/*"
           onChange={handleFileUpload}
+          className="hidden"
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="w-full p-3 bg-white dark:bg-tuscan-red text-raisin-black dark:text-white border-2 border-tan dark:border-rosy-brown hover:bg-tan dark:hover:bg-rosy-brown flex items-center justify-center gap-2"
+          className="w-full p-3 text-sm text-[hsl(var(--primary))] shadow"
         >
-          <Upload size={16} />
+          <Upload size={16} className="inline-block mr-2" />
           {settings.logo ? 'Change Logo' : 'Upload Logo'}
         </button>
         {settings.logo && (
@@ -281,7 +229,7 @@ const QRCustomizer = ({ settings, onSettingsChange }: QRCustomizerProps) => {
             <img src={settings.logo} alt="Logo preview" className="w-12 h-12 object-cover" />
             <button
               onClick={() => updateSettings({ logo: null })}
-              className="text-sm text-rosy-brown hover:text-tuscan-red"
+              className="text-sm text-[hsl(var(--primary))] hover:underline"
             >
               Remove
             </button>
@@ -289,52 +237,40 @@ const QRCustomizer = ({ settings, onSettingsChange }: QRCustomizerProps) => {
         )}
       </div>
 
-      {/* Label */}
+      {/* Label Text */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-raisin-black dark:text-silver-pink mb-2">
-          Label Text
-        </label>
+        <label className="block text-sm font-medium mb-2">Label Text</label>
         <input
           type="text"
           value={settings.labelText}
           onChange={(e) => updateSettings({ labelText: e.target.value })}
-          placeholder="Add a label below QR code..."
-          className="w-full p-3 bg-white dark:bg-tuscan-red text-raisin-black dark:text-white border-2 border-tan dark:border-rosy-brown focus:border-tuscan-red dark:focus:border-tan outline-none mb-3"
+          className="w-full p-3 bg-transparent text-[hsl(var(--foreground))] focus:ring-2 focus:ring-[hsl(var(--primary))] outline-none"
         />
-        
         {settings.labelText && (
           <>
-            <div className="mb-3">
-              <label className="block text-xs text-rosy-brown mb-1">Label Color</label>
-              <div className="relative">
-                <div
-                  className="w-full h-8 border-2 border-tan dark:border-rosy-brown cursor-pointer"
-                  style={{ backgroundColor: settings.labelColor }}
-                  onClick={() => setShowLabelColorPicker(!showLabelColorPicker)}
-                />
-                {showLabelColorPicker && (
-                  <div className="absolute top-10 left-0 z-10">
-                    <div
-                      className="fixed inset-0"
-                      onClick={() => setShowLabelColorPicker(false)}
-                    />
-                    <SketchPicker
-                      color={settings.labelColor}
-                      onChange={(color) => updateSettings({ labelColor: color.hex })}
-                    />
-                  </div>
-                )}
-              </div>
+            <div className="mt-4">
+              <label className="block text-sm mb-2">Label Color</label>
+              <div
+                className="h-10 rounded-lg shadow-sm cursor-pointer"
+                style={{ backgroundColor: settings.labelColor }}
+                onClick={() => setShowLabelColorPicker(!showLabelColorPicker)}
+              />
+              {showLabelColorPicker && (
+                <div className="relative z-10 mt-2">
+                  <div className="fixed inset-0" onClick={() => setShowLabelColorPicker(false)} />
+                  <SketchPicker
+                    color={settings.labelColor}
+                    onChange={(color) => updateSettings({ labelColor: color.hex })}
+                  />
+                </div>
+              )}
             </div>
-            
-            <div>
-              <label className="block text-xs text-rosy-brown mb-1">
-                Font Size: {settings.labelSize}px
-              </label>
+            <div className="mt-4">
+              <label className="block text-sm mb-1">Font Size: {settings.labelSize}px</label>
               <input
                 type="range"
-                min="12"
-                max="24"
+                min={12}
+                max={24}
                 value={settings.labelSize}
                 onChange={(e) => updateSettings({ labelSize: parseInt(e.target.value) })}
                 className="w-full"
@@ -344,12 +280,12 @@ const QRCustomizer = ({ settings, onSettingsChange }: QRCustomizerProps) => {
         )}
       </div>
 
-      {/* Reset Button */}
+      {/* Reset */}
       <motion.button
         onClick={resetSettings}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        className="w-full p-3 bg-tuscan-red text-white hover:bg-rosy-brown flex items-center justify-center gap-2"
+        className="w-full p-3 mt-4 bg-[hsl(var(--primary))] text-white flex items-center justify-center gap-2"
       >
         <RotateCcw size={16} />
         Reset All Settings

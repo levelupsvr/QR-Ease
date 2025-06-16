@@ -20,10 +20,10 @@ const QRCustomizerEnhanced = () => {
     >
       <div className="space-y-8">
         <div>
-          <h2 className="text-3xl font-bold text-raisin-black dark:text-silver-pink mb-2">
+          <h2 className="text-3xl font-bold text-muted dark:text-silver-pink mb-2">
             Customize QR Code
           </h2>
-          <p className="text-rosy-brown dark:text-tan">
+          <p className="text-destructive dark:text-tan">
             Configure your QR code settings with advanced customizations
           </p>
         </div>

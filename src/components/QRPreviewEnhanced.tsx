@@ -124,7 +124,7 @@ const QRPreviewEnhanced = () => {
       className="h-full flex flex-col p-8"
     >
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-raisin-black dark:text-silver-pink mb-2">
+        <h2 className="text-3xl font-bold text-muted dark:text-silver-pink mb-2">
           Live Preview
         </h2>
         <p className="text-rosy-brown dark:text-tan">
@@ -132,7 +132,7 @@ const QRPreviewEnhanced = () => {
         </p>
       </div>
 
-      <GlassCard className="p-8 relative mb-8">
+      <GlassCard className="p-8 relative mb-8 ">
         <motion.div
           className="relative"
           animate={isGenerating ? { scale: 0.95, opacity: 0.7 } : { scale: 1, opacity: 1 }}
@@ -140,7 +140,7 @@ const QRPreviewEnhanced = () => {
         >
           {!settings.data ? (
             <div className="w-80 h-80 bg-silver-pink/20 dark:bg-raisin-black/20 flex items-center justify-center border-2 border-dashed border-tan dark:border-rosy-brown">
-              <p className="text-rosy-brown dark:text-tan text-center">
+              <p className="text-destructive dark:text-tan text-center">
                 Enter data to generate<br />your QR code
               </p>
             </div>

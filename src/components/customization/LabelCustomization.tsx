@@ -23,7 +23,7 @@ const LabelCustomization = () => {
     { value: 'semibold', label: 'Semi Bold' },
     { value: 'bold', label: 'Bold' },
   ];
-
+  
   return (
     <GlassCard className="p-6 mb-8">
       <h3 className="text-lg font-semibold text-raisin-black dark:text-silver-pink mb-4">
