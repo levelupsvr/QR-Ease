@@ -35,7 +35,7 @@ const QRPreview = ({ settings }: QRPreviewProps) => {
           data: formattedData,
           margin: settings.margin,
           qrOptions: {
-            typeNumber: 0,
+            typeNumber: 0 as const,
             mode: 'Byte' as const,
             errorCorrectionLevel: settings.errorCorrectionLevel,
           },
@@ -47,18 +47,18 @@ const QRPreview = ({ settings }: QRPreviewProps) => {
           },
           dotsOptions: {
             color: settings.foregroundColor,
-            type: settings.dotType === 'rounded' ? 'rounded' : 'square',
+            type: settings.dotType === 'rounded' ? ('rounded' as const) : ('square' as const),
           },
           backgroundOptions: {
             color: settings.backgroundColor,
           },
           cornersSquareOptions: {
             color: settings.foregroundColor,
-            type: settings.dotType === 'rounded' ? 'extra-rounded' : 'square',
+            type: settings.dotType === 'rounded' ? ('extra-rounded' as const) : ('square' as const),
           },
           cornersDotOptions: {
             color: settings.foregroundColor,
-            type: settings.dotType === 'rounded' ? 'dot' : 'square',
+            type: settings.dotType === 'rounded' ? ('dot' as const) : ('square' as const),
           },
         };
 
