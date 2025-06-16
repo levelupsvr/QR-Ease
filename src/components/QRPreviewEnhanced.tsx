@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import QRCodeStyling from 'qr-code-styling';
@@ -132,24 +131,33 @@ const QRPreviewEnhanced = () => {
         </p>
       </div>
 
-      <GlassCard className="p-8 relative mb-8 ">
+      <GlassCard className="p-8 relative mb-8 flex items-center justify-center min-h-[420px]">
         <motion.div
           className="relative"
-          animate={isGenerating ? { scale: 0.95, opacity: 0.7 } : { scale: 1, opacity: 1 }}
-          transition={{ duration: 0.2 }}
+          initial={{ scale: 0.92, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           {!settings.data ? (
-            <div className="w-80 h-80 bg-silver-pink/20 dark:bg-raisin-black/20 flex items-center justify-center border-2 border-dashed border-tan dark:border-rosy-brown">
-              <p className="text-destructive dark:text-tan text-center">
+            <motion.div
+              whileHover={{ scale: 1.03, boxShadow: "0 8px 32px 0 rgba(216,96,114,0.10)" }}
+              className="w-full max-w-[340px] aspect-square bg-silver-pink/10 dark:bg-raisin-black/20 flex items-center justify-center border-2 border-dashed border-tan dark:border-rosy-brown rounded-xl shadow-md transition-all duration-300"
+            >
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="text-destructive dark:text-tan text-center text-lg font-medium px-4"
+              >
                 Enter data to generate<br />your QR code
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
           ) : (
             <div className="flex flex-col items-center">
               <div
                 ref={qrRef}
-                className="bg-white p-4 shadow-lg"
-                style={{ 
+                className="bg-white p-4 shadow-lg rounded-xl"
+                style={{
                   backgroundColor: settings.backgroundColor,
                   filter: settings.glowEffect ? `drop-shadow(0 0 20px ${settings.outlineColor})` : 'none'
                 }}
@@ -162,8 +170,8 @@ const QRPreviewEnhanced = () => {
                   style={{
                     color: settings.labelColor,
                     fontSize: `${settings.labelSize}px`,
-                    fontFamily: settings.labelFont === 'serif' ? 'serif' : 
-                               settings.labelFont === 'mono' ? 'monospace' : 'Inter'
+                    fontFamily: settings.labelFont === 'serif' ? 'serif' :
+                      settings.labelFont === 'mono' ? 'monospace' : 'Inter'
                   }}
                 >
                   {settings.labelText}

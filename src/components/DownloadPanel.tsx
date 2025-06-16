@@ -171,7 +171,13 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           onClick={downloadPNG}
           whileHover={{ scale: 1.05, boxShadow: "0 8px 24px 0 rgba(0,0,0,0.18)" }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 rounded-lg p-3 bg-primary text-[hsl(var(--primary-foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] transition-colors  dark:text-[var(--background)]"
+          className="
+            flex items-center justify-center gap-2 rounded-lg p-3
+            bg-primary text-[hsl(var(--primary-foreground))]
+            hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]
+            transition-colors
+            dark:bg-[hsl(var(--card))] dark:text-[hsl(var(--card-foreground))]
+          "
         >
           <Image size={16} />
           PNG
@@ -181,7 +187,13 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           onClick={downloadSVG}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 rounded-lg p-3 bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] transition-colors  dark:text-[var(--background)]"
+          className="
+            flex items-center justify-center gap-2 rounded-lg p-3
+            bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))]
+            hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]
+            transition-colors
+            dark:bg-[hsl(var(--card))] dark:text-[hsl(var(--card-foreground))]
+          "
         >
           <FileText size={16} />
           SVG
@@ -191,7 +203,13 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           onClick={downloadScreenshot}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 rounded-lg p-3 bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] transition-colors  dark:text-[var(--background)]"
+          className="
+            flex items-center justify-center gap-2 rounded-lg p-3
+            bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))]
+            hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]
+            transition-colors
+            dark:bg-[hsl(var(--card))] dark:text-[hsl(var(--card-foreground))]
+          "
         >
           <Camera size={16} />
           Screenshot

@@ -7,14 +7,14 @@ const Footer = () => {
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, ease: 'easeOut' }}
-      className="relative mt-auto overflow-hidden bg-gradient-to-r from-[hsl(var(--background))] via-[hsl(var(--popover))] to-[hsl(var(--secondary))] border border-[hsl(var(--border))] text-muted dark:from-[#1a1a1a] dark:via-[#2a2a2a] dark:to-[#1a1a1a] py-10 px-6 border-t border-[#fddedf] dark:border-[#333]"
+      className="relative mt-auto overflow-hidden bg-gradient-to-r from-[hsl(var(--background))] via-[hsl(var(--popover))] to-[hsl(var(--secondary))] border border-[hsl(var(--border))] text-muted dark:from-accent dark:via-background dark:to-accent py-10 px-6 border-t border-[#fddedf] dark:border-[#333]"
     >
       {/* Animated Floating Circles */}
       <div className="absolute -top-10 left-0 w-full h-full pointer-events-none opacity-20">
         <motion.div
           animate={{ y: [0, -20, 0] }}
           transition={{ repeat: Infinity, duration: 6 }}
-          className="absolute w-40 h-40 bg-petal rounded-full blur-3xl left-10"
+          className="absolute w-40 h-40 bg-accent dark:bg-ring rounded-full blur-3xl left-10"
         />
         <motion.div
           animate={{ y: [0, -15, 0] }}

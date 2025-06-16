@@ -205,3 +205,11 @@ input[type="file"] {
   50% { opacity: 1; filter: blur(16px);}
 }
 .animate-glow { animation: glow 2.5s infinite; }
+
+@keyframes glowring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(216,96,114,0.15); }
+  50% { box-shadow: 0 0 0 8px rgba(216,96,114,0.25); }
+}
+.animate-glowring {
+  animation: glowring 2s infinite;
+}
