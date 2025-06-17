@@ -148,8 +148,8 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
 
   if (!settings.data) {
     return (
-      <div className="p-4 text-center bg-accent dark:bg-rosy-brown">
-        <p className="text-[hsl(var(--destructive-foreground))] dark:text-silver-pink">
+      <div className="p-4 text-center bg-accent dark:bg-raisin-black/10">
+        <p className="text-[hsl(var(--destructive-foreground))] dark:assent">
           Generate a QR code to enable downloads
         </p>
       </div>
@@ -160,9 +160,9 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
     <motion.div
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="p-4 bg-accent border border-destructive dark:bg-rosy-brown"
+      className="p-4 bg-accent border border-destructive dark:bg-[hsl(var(--background))] dark:border-[hsl(var(--secondary))] rounded-xl"
     >
-      <h3 className="mb-4 text-center text-lg font-semibold text-[hsl(var(--foreground))] dark:text-ring">
+      <h3 className="mb-4 text-center text-lg font-semibold text-[hsl(var(--foreground))] dark:text-[hsl(var(--primary))]">
         Download Options
       </h3>
 
@@ -172,11 +172,10 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           whileHover={{ scale: 1.05, boxShadow: "0 8px 24px 0 rgba(0,0,0,0.18)" }}
           whileTap={{ scale: 0.95 }}
           className="
-            flex items-center justify-center gap-2 rounded-lg p-3
+            flex items-center justify-center gap-2 rounded-xl p-3
             bg-primary text-[hsl(var(--primary-foreground))]
-            hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]
             transition-colors
-            dark:bg-[hsl(var(--card))] dark:text-[hsl(var(--card-foreground))]
+            dark:bg-[hsl(var(--secondary))] dark:text-[hsl(var(--secondary-foreground))]
           "
         >
           <Image size={16} />
@@ -188,11 +187,10 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="
-            flex items-center justify-center gap-2 rounded-lg p-3
+            flex items-center justify-center gap-2 rounded-xl p-3
             bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))]
-            hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]
             transition-colors
-            dark:bg-[hsl(var(--card))] dark:text-[hsl(var(--card-foreground))]
+            dark:bg-secondary dark:text-[hsl(var(--accent-foreground))]
           "
         >
           <FileText size={16} />
@@ -204,11 +202,10 @@ const DownloadPanel = ({ qrRef }: DownloadPanelProps) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="
-            flex items-center justify-center gap-2 rounded-lg p-3
+            flex items-center justify-center gap-2 rounded-xl p-3
             bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))]
-            hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]
             transition-colors
-            dark:bg-[hsl(var(--card))] dark:text-[hsl(var(--card-foreground))]
+            dark:bg-secondary dark:text-[hsl(var(--destructive-foreground))]
           "
         >
           <Camera size={16} />
