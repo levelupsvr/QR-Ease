@@ -1,73 +1,33 @@
-# Welcome to your Lovable project
+# QREase
 
-## Project info
+**QREase** is a **professional QR code generator** with a clean UI, custom color scheme, and smooth UX — built with **React, Framer Motion, and Tailwind CSS**.
 
-**URL**: https://lovable.dev/projects/3e597c31-2db9-4002-9d50-c26c96bbe251
+---
 
-## How can I edit this code?
+## 🔹 Features
 
-There are several ways of editing your application.
+- **Live QR Code Preview** — updates instantly as you customize.
+- **Customizable QR Code** — adjust colors, glow, outline, label, font, size, and alignment.
+- **Theme Support** — light and dark modes with custom CSS variables and persistent preference.
+- **Download Options** — PNG, SVG, or Screenshot (with label included, centered, wrapped, and styled for a professional result).
+- **Responsive Design** — works seamlessly on mobile, tablet, and desktop.
+- **Modern UI/UX** — animated header, logo, buttons, and placeholders.
+- **Accessibility** — semantic colors, focus rings, and keyboard/screen-reader friendly components.
+- **Clean Code** — semantic color variables, modular components, and maintainable structure.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3e597c31-2db9-4002-9d50-c26c96bbe251) and start prompting.
+## 🔹 Bug Fixes
 
-Changes made via Lovable will be committed automatically to this repo.
+- Fixed issue where screenshot export showed a blank page.
+- Fixed missing label in PNG/SVG exports — label is now properly included, centered, and styled.
+- Fixed issue where entire section was captured instead of just the QR code.
+- Resolved SVG export clipping (label visibility and viewBox).
+- Fixed light theme color inconsistency by enforcing semantic CSS variables (`--background`, `--card`, `--primary`, etc.).
+- Ensured light and dark themes now correctly apply their respective custom color schemes.
+- Removed distracting background effects for a cleaner appearance.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+✨ QREase lets you **generate and export QR codes with ease while delivering a polished, professional experience.**
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/3e597c31-2db9-4002-9d50-c26c96bbe251) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
