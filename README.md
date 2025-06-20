@@ -2,6 +2,7 @@
 
 **QREase** is a **professional QR code generator** with a clean UI, custom color scheme, and smooth UX — built with **React, Framer Motion, and Tailwind CSS**.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2e840690-XXXX-XXXX-XXXX-XXXXXXXXXXXX/deploy-status)](https://qr-ease.netlify.app/)
 ---
 
 ## 🔹 Features
