@@ -29,8 +29,19 @@ const GlassCard = ({ children, className, animate = true }: GlassCardProps) => {
         // Dark mode styles (preserved)
         "dark:bg-raisin-black/10 dark:border-rosy-brown/20 dark:shadow-black/20 dark:text-silver-pink",
 
-        // Shared styles
+        // Shared styles with mobile optimizations
         "rounded-lg overflow-hidden transition-all duration-300 cursor-glow ripple",
+        
+        // Mobile optimizations
+        "touch-manipulation", // Better touch response
+        "active:scale-[0.98] active:shadow-sm", // Touch feedback
+        "sm:active:scale-100", // Disable scale on larger screens
+        "will-change-transform", // Optimize for animations
+        
+        // Mobile-specific hover states
+        "sm:hover:shadow-lg sm:hover:shadow-[hsl(var(--primary)/0.12)]",
+        "sm:dark:hover:shadow-black/30",
+        
         className
       )}
       {...animationProps}
